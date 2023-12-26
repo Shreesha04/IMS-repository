@@ -11,7 +11,7 @@ class IMS:
         btn_logout=Button(self.root,text="Logout",font=("times new roman",15,"bold"),bg="yellow",cursor="hand2").place(x=1150,y=10,height=50,width=150)
         self.lbl_clock=Label(self.root,text="Welcome To Inventory Management System\t\t Date:DD-MM-YYYY\t\t Time: HH-MM-SS",font=("times new roman",15,),bg="#E0EEEE",fg="#000000")
         self.lbl_clock.place(x=0,y=70,relwidth=1,height=30)
-        self.MenuLogo=Image.open("images/menu_im.png")
+        self.MenuLogo=Image.open("S:\IMS repo/menu_im.png")
         self.MenuLogo=self.MenuLogo.resize((200,200),Image.LANCZOS)
         self.MenuLogo=ImageTk.PhotoImage(self.MenuLogo)
         LeftMenu=Frame(self.root,bd=2,relief=RIDGE,bg="white")
