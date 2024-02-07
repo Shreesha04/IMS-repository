@@ -302,11 +302,12 @@ class employeeClass:
         try:
             if self.var_searchby.get()=="Select":
                 messagebox.showerror("Error","Select Search by option",parent=self.root)
+
             elif self.var_searchtxt.get()=="":
                 messagebox.showerror("Error","Search input should be required",parent=self.root)
 
             else:
-                cur.execute("select *from employee where "+self.var_searchby.get()+" LIKE '%",+self.var_searchtxt.get()+"%'")
+                cur.execute("select *from employee where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
                 rows=cur.fetchall()
                 if len(rows)!=0:
                     self.EmployeeTable.delete(*self.EmployeeTable.get_children())
@@ -314,7 +315,6 @@ class employeeClass:
                         self.EmployeeTable.insert('',END,values=row)
                 else:
                     messagebox.showerror("Error","No record found",parent=self.root)
-
 
 
         except Exception as ex:

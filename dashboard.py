@@ -1,6 +1,7 @@
 from tkinter import*
 from PIL import Image,ImageTk
 from employee import employeeClass
+from supplier import supplierClass
 class IMS:
     def __init__(self,root):
         self.root=root
@@ -23,7 +24,7 @@ class IMS:
         
         lbl_menu=Label(LeftMenu,text="Menu",font=("times new roman",20),bg="#458B00").pack(side=TOP,fill=X)
         btn_employee=Button(LeftMenu,text="Employee",command=self.employee,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
-        btn_supplier=Button(LeftMenu,text="Supplier",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
+        btn_supplier=Button(LeftMenu,text="Supplier",command=self.supplier,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_category=Button(LeftMenu,text="Category",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_products=Button(LeftMenu,text="Products",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         
@@ -48,6 +49,10 @@ class IMS:
     def employee(self):
         self.new_win=Toplevel(self.root)
         self.new_obj=employeeClass(self.new_win)
+
+    def supplier(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=supplierClass(self.new_win)
 
 if __name__ == "__main__":
     root=Tk()
