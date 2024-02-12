@@ -73,6 +73,7 @@ class supplierClass:
 
         #empdet
 
+
         emp_frame=Frame(self.root,bd=3,relief=RIDGE)
         emp_frame.place(x=700,y=120,width=380,height=350)
 
