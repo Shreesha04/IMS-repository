@@ -2,6 +2,8 @@ from tkinter import*
 from PIL import Image,ImageTk
 from employee import employeeClass
 from supplier import supplierClass
+from category import categoryClass
+
 class IMS:
     def __init__(self,root):
         self.root=root
@@ -25,7 +27,7 @@ class IMS:
         lbl_menu=Label(LeftMenu,text="Menu",font=("times new roman",20),bg="#458B00").pack(side=TOP,fill=X)
         btn_employee=Button(LeftMenu,text="Employee",command=self.employee,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_supplier=Button(LeftMenu,text="Supplier",command=self.supplier,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
-        btn_category=Button(LeftMenu,text="Category",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
+        btn_category=Button(LeftMenu,text="Category",command=self.category,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_products=Button(LeftMenu,text="Products",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         
         btn_sales=Button(LeftMenu,text="Sales",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
@@ -53,6 +55,10 @@ class IMS:
     def supplier(self):
         self.new_win=Toplevel(self.root)
         self.new_obj=supplierClass(self.new_win)
+
+    def category(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=categoryClass(self.new_win)
 
 if __name__ == "__main__":
     root=Tk()
