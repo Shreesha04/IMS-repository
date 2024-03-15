@@ -4,6 +4,7 @@ from employee import employeeClass
 from supplier import supplierClass
 from category import categoryClass
 from product import productClass
+from sales import salesClass 
 
 class IMS:
     def __init__(self,root):
@@ -30,6 +31,7 @@ class IMS:
         btn_supplier=Button(LeftMenu,text="Supplier",command=self.supplier,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_category=Button(LeftMenu,text="Category",command=self.category,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_products=Button(LeftMenu,text="Products",command=self.product,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
+        btn_products=Button(LeftMenu,text="Sales",command=self.sales,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         
         btn_sales=Button(LeftMenu,text="Sales",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_exit=Button(LeftMenu,text="Exit",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
@@ -64,6 +66,10 @@ class IMS:
     def product(self):
         self.new_win=Toplevel(self.root)
         self.new_obj=productClass(self.new_win)
+
+    def sales(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=salesClass(self.new_win)
 
 if __name__ == "__main__":
     root=Tk()
