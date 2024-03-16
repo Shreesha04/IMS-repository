@@ -3,6 +3,8 @@ from PIL import Image,ImageTk
 from tkinter import ttk,messagebox
 import sqlite3
 import time
+import os
+import tempfile
 
 class BillClass:
     def __init__(self,root):
@@ -11,10 +13,11 @@ class BillClass:
         self.root.title("Inventory Management System")
         self.root.config(bg="white")
         self.cart_list=[]
+        self.chk_print=0
 
         
         title=Label(self.root,text="Inventory Management System",font=("times new roman",40,"bold"),bg="#0000EE",fg="#FFEBCD",anchor="w",padx=20).place(x=0,y=0,relwidth=1,height=70)
-        btn_logout=Button(self.root,text="Logout",font=("times new roman",15,"bold"),bg="yellow",cursor="hand2").place(x=1150,y=10,height=50,width=150)
+        btn_logout=Button(self.root,command=self.logout,text="Logout",font=("times new roman",15,"bold"),bg="yellow",cursor="hand2").place(x=1150,y=10,height=50,width=150)
         self.lbl_clock=Label(self.root,text="Welcome To Inventory Management System\t\t Date:DD-MM-YYYY\t\t Time: HH-MM-SS",font=("times new roman",15,),bg="#E0EEEE",fg="#000000")
         self.lbl_clock.place(x=0,y=70,relwidth=1,height=30)
 
@@ -222,7 +225,7 @@ class BillClass:
         self.lbl_net_pay.place(x=246,y=5,width=130,height=70)
 
 
-        btn_print=Button(billMenuFrame,text='Print',cursor="hand2",font=("goudy old style",15,"bold"),bg="lightgreen",fg="white")
+        btn_print=Button(billMenuFrame,text='Print',command=self.print_bill,cursor="hand2",font=("goudy old style",15,"bold"),bg="lightgreen",fg="white")
         btn_print.place(x=2,y=80,width=120,height=50)
 
         btn_clear_all=Button(billMenuFrame,text='Clear all',command=self.clear_all,cursor="hand2",font=("goudy old style",15,"bold"),bg="grey",fg="white")
@@ -400,6 +403,8 @@ class BillClass:
             fp.close()
             messagebox.showinfo('Saved',"Bill has been generated",parent=self.root)
 
+            self.chk_print=1
+
 
     def bill_top(self):
         self.invoice=int(time.strftime("%H%M%S"))+int(time.strftime("%d%m%Y"))
@@ -480,6 +485,7 @@ class BillClass:
         self.txt_bill_area.delete('1.0',END)
         self.cartTitle.config(text=f"Cart\t Total Product: [0]")
         self.var_search.set('')
+        self.chk_print=0  #########
         self.clear_cart()
         self.show()
         self.show_cart()
@@ -490,6 +496,21 @@ class BillClass:
         date_=time.strftime("%d-%m-%Y")
         self.lbl_clock.config(text=f"Welcome To Inventory Management System\t\t Date: {str(date_)}\t\t Time: {str(time_)}")
         self.lbl_clock.after(200,self.update_date_time)
+
+
+    def print_bill(self):
+        if self.chk_print==1:
+            messagebox.showinfo('Print','Please wait while printing',parent=self.root)
+            new_file=tempfile.mktemp('.txt')
+            open(new_file,'w').write(self.txt_bill_area.get('1.0',END))
+            os.startfile(new_file,'print')
+        else:
+            messagebox.showerror('Print','Please generate bill to print the receipt',parent=self.root)
+
+    def logout(self):
+        self.root.destroy()
+        os.system("python login.py")
+          
 
 
 if __name__ == "__main__":
