@@ -195,8 +195,6 @@ class productClass:
             for row in rows:
                 self.product_table.insert('',END,values=row)
 
-
-
         except Exception as ex:
             messagebox.showerror("Error",f"Error due to: {str(ex)}",parent=self.root)    
 
