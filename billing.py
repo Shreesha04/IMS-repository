@@ -190,7 +190,7 @@ class BillClass:
         self.lbl_inStock=Label(Add_CartWidgetsFrame,text="In Stock",font=("times new roman",15),bg="white")
         self.lbl_inStock.place(x=5,y=70)
 
-        btn_Clear_cart=Button(Add_CartWidgetsFrame,text="Clear",font=("times new roman",15,"bold"),bg="lightgrey",cursor="hand2").place(x=180,y=70,width=150,height=30)
+        btn_Clear_cart=Button(Add_CartWidgetsFrame,text="Clear",command=self.clear_cart,font=("times new roman",15,"bold"),bg="lightgrey",cursor="hand2").place(x=180,y=70,width=150,height=30)
         btn_add_cart=Button(Add_CartWidgetsFrame,command=self.add_update_cart,text="Add | Update Cart",font=("times new roman",15,"bold"),bg="orange",cursor="hand2").place(x=340,y=70,width=180,height=30)
 
 
@@ -225,7 +225,7 @@ class BillClass:
         btn_print=Button(billMenuFrame,text='Print',cursor="hand2",font=("goudy old style",15,"bold"),bg="lightgreen",fg="white")
         btn_print.place(x=2,y=80,width=120,height=50)
 
-        btn_clear_all=Button(billMenuFrame,text='Clear all',cursor="hand2",font=("goudy old style",15,"bold"),bg="grey",fg="white")
+        btn_clear_all=Button(billMenuFrame,text='Clear all',command=self.clear_all,cursor="hand2",font=("goudy old style",15,"bold"),bg="grey",fg="white")
         btn_clear_all.place(x=124,y=80,width=120,height=50)
 
         btn_generate=Button(billMenuFrame,text='Generate/\nSave Bill',command=self.generate_bill,cursor="hand2",font=("goudy old style",15,"bold"),bg="#009688",fg="white")
@@ -234,6 +234,7 @@ class BillClass:
         #===footer not added
 
         self.show()
+        self.update_date_time()
         #self.bill_top()
         
 
@@ -392,17 +393,23 @@ class BillClass:
             self.bill_middle()
             #bill bottom======
             self.bill_bottom()
-            pass
+            
+
+            fp=open(f'bill/{str(self.invoice)}.txt','w')
+            fp.write(self.txt_bill_area.get('1.0',END))
+            fp.close()
+            messagebox.showinfo('Saved',"Bill has been generated",parent=self.root)
+
 
     def bill_top(self):
-        invoice=int(time.strftime("%H%M%S"))+int(time.strftime("%d%m%Y"))
+        self.invoice=int(time.strftime("%H%M%S"))+int(time.strftime("%d%m%Y"))
         bill_top_temp=f'''
 \t\tXYZ-Inventory
 \t Phone No. 9872545124 , Bangalore-74
 {str("="*45)}
  Customer Name: {self.var_cname.get()}
  Ph no. :{self.var_contact.get()}
- Bill No. {str(invoice)}\t\t\tDate: {str(time.strftime("%d/%m/%Y"))}
+ Bill No. {str(self.invoice)}\t\t\tDate: {str(time.strftime("%d/%m/%Y"))}
 {str("="*45)}
  Product Name\t\t\tQTY\tPrice
 {str("="*45)}
@@ -423,13 +430,66 @@ class BillClass:
         self.txt_bill_area.insert(END,bill_bottom_temp)
 
     def bill_middle(self):
-        for row in self.cart_list:
-            #pid,name,price,qty,stock
-            name=row[1]
-            qty=row[3]
-            price=float(row[2])*int(row[3])
-            price=str(price)
-            self.txt_bill_area.insert(END,"\n "+name+"\t\t\t"+qty+"\tRs."+price)
+        con=sqlite3.connect(database=r'ims.db')
+        cur=con.cursor()
+
+        try:
+            for row in self.cart_list:
+                #pid,name,price,qty,stock
+                pid=row[0]
+                name=row[1]
+                qty=int(row[4])-int(row[3])
+                if int(row[3])==int(row[4]):
+                    status='Inactive'
+                if int(row[3])!=int(row[4]):
+                    status='Active'
+
+
+                price=float(row[2])*int(row[3])
+                price=str(price)
+                self.txt_bill_area.insert(END,"\n "+name+"\t\t\t"+row[3]+"\tRs."+price)
+
+                #===update qty in pdt table====
+
+                cur.execute('Update product set qty=?,status=? where pid=?',(
+                    qty,
+                    status,
+                    pid
+                ))
+                con.commit()
+            con.close()
+            self.show()
+                
+
+        except Exception as ex:
+            messagebox.showerror("Error",f"Error due to: {str(ex)}",parent=self.root) 
+
+
+    def clear_cart(self):
+        self.var_pid.set('')
+        self.var_pname.set('')
+        self.var_price.set('')
+        self.var_qty.set('') 
+        self.lbl_inStock.config(text=f"In Stock")
+        self.var_stock.set('')
+        
+    def clear_all(self):
+        del self.cart_list[:]
+        self.var_cname.set('')
+        self.var_contact.set('')
+        self.txt_bill_area.delete('1.0',END)
+        self.cartTitle.config(text=f"Cart\t Total Product: [0]")
+        self.var_search.set('')
+        self.clear_cart()
+        self.show()
+        self.show_cart()
+
+
+    def update_date_time(self):
+        time_=time.strftime("%I:%M:%S")
+        date_=time.strftime("%d-%m-%Y")
+        self.lbl_clock.config(text=f"Welcome To Inventory Management System\t\t Date: {str(date_)}\t\t Time: {str(time_)}")
+        self.lbl_clock.after(200,self.update_date_time)
 
 
 if __name__ == "__main__":
