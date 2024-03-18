@@ -34,8 +34,10 @@ class Login_System:
         
         #hr=Label(login_frame,bg="lightgrey").place(x=50,y=360,width=250,height=2)
 
-        btn_forget=Button(login_frame,command=self.forget_window,text="Forget Password?",font=("times new roman",13),bg="white",fg="#00759E",bd=0).place(x=100,y=360)
+        btn_forget=Button(login_frame,command=self.forget_window,text="Forget Password?",font=("times new roman",13),bg="white",fg="#00759E",bd=0).place(x=110,y=360)
 
+        #new user contact admin
+        lbl_new_user=Label(login_frame,text="New User?\nContact Admin",font=("goudy old style",13),bg="white",justify=CENTER).place(x=115,y=390)
        
 
     def login(self):
