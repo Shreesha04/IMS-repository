@@ -38,7 +38,7 @@ class IMS:
         btn_sales=Button(LeftMenu,text="Sales",command=self.sales,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         
        #btn_sales=Button(LeftMenu,text="Sales",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
-        btn_exit=Button(LeftMenu,text="Exit",font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
+        btn_exit=Button(LeftMenu,text="Exit",command=self.exit,font=("times new roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         
         self.lbl_employee=Label(self.root,text="Total Employees\n[0]",bg="#6495ED",fg="white",font=("times new roman",20,"bold"))
         self.lbl_employee.place(x=300,y=120,height=150,width=300)
@@ -113,6 +113,10 @@ class IMS:
             messagebox.showerror("Error",f"Error due to: {str(ex)}",parent=self.root)    
 
     def logout(self):
+        self.root.destroy()
+        os.system("python login.py")
+
+    def exit(self):
         self.root.destroy()
         os.system("python login.py")
 

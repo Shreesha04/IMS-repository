@@ -25,7 +25,7 @@ class categoryClass:
         #####cate det
         
         cat_frame=Frame(self.root,bd=3,relief=RIDGE)
-        cat_frame.place(x=700,y=100,width=380,height=100)
+        cat_frame.place(x=700,y=100,width=380,height=300)
 
 
         scrolly=Scrollbar(cat_frame,orient=VERTICAL)
